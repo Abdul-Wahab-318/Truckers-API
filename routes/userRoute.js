@@ -5,14 +5,14 @@ const { isAuthenticated } = require("../middleware/auth")
 
 
 //GET SPECIFIC USER
-router.route("/users/userID/:id").get(getUser)
+router.route("/userID/:id").get(getUser)
 
 //CREATE USER
-router.route("/users/create").post(createUser)
+router.route("/register").post(createUser)
 
 //LOGIN USER
-router.route("/users/login").post(loginUser)
+router.route("/login").post(loginUser)
 
 //LOGOUT USER
-router.route("/users/logout").post(logoutUser)
+router.route("/logout").post(logoutUser)
 module.exports = router

@@ -2,13 +2,11 @@ let jwt = require("jsonwebtoken")
 let userSchema = require('../schema/userSchema')
 exports.isAuthenticated =  (req,res,next)=>{
     
-
-    // let {token} = req.signedCookies
     let {token} = req.cookies
-    console.log( "TOKEN !!!" , req.cookies)
+
     if(!token)
     {
-        res.status(400).json({
+        res.status(404).json({
             message: "Must be Logged in first"
         })
     }

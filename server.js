@@ -5,14 +5,6 @@ let app = express()
 let connectDb = require("./config/connectDB")
 connectDb()
 
-//CLOUDINARY CONFIG 
-const cloudinary = require('cloudinary').v2
-
-cloudinary.config({ 
-    cloud_name: 'lorem', 
-    api_key: 'lorem', 
-    api_secret: 'lorem' 
-  });
 
 //COOKIE PARSER
 let cookieParser = require("cookie-parser")
@@ -42,3 +34,6 @@ app.use("/user" , userRoute )
 
 let shipmentRoute = require("./routes/shipmentRoute")
 app.use("/shipment" , shipmentRoute)
+
+let vehicleRoute = require("./routes/VehicleRoute")
+app.use("/vehicle" , vehicleRoute )

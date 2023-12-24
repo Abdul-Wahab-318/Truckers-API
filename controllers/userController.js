@@ -1,4 +1,6 @@
+const shipmentSchema = require("../schema/shipmentSchema")
 let userSchema = require("../schema/userSchema")
+const vehicleSchema = require("../schema/vehicleSchema")
 
 
 //GET SPECIFIC USER
@@ -21,8 +23,20 @@ exports.getUser = async (req,res)=>{
 exports.createUser = async (req,res)=>{
     try{
         let newUser = await userSchema.create(req.body)
-        res.status(201).json({
-            message: `${newUser} created `
+        delete newUser._doc.password
+
+        let jwt = newUser.getJwtToken()
+
+        return res.status(201)
+        .cookie("token", jwt , 
+        {
+            httpOnly:true ,
+            secure:true,
+            sameSite:'none',
+        })
+        .json({
+            message: `user created ` ,
+            user: newUser
         })
     }
     catch(e){
@@ -53,7 +67,7 @@ exports.loginUser =  async (req,res)=>{
 
         if(!email || !password)
         {
-            res.status(400).json({
+            return res.status(400).json({
                 message: "Enter email and password"
             })
   
@@ -63,19 +77,23 @@ exports.loginUser =  async (req,res)=>{
 
         if(!user)
         {
-            res.status(400).json({
-                message: "User not found .Please Retry"
+            return res.status(400).json({
+                message: "User not found"
             })
         }
+
         let isMatched = await user.comparePassword(password)
+
         if(!isMatched) // if password is not correct run this
         {
-            res.status(400).json({
+            return res.status(400).json({
                 message: "Password or email Incorrect"
             })
         }
+
+        delete user._doc.password
         let token = user.getJwtToken()
-        res.status(200).cookie("token", token , 
+        return res.status(200).cookie("token", token , 
             {
                 httpOnly:true ,
                 secure:true,
@@ -103,3 +121,5 @@ exports.logoutUser = async (req,res)=>{
         message: "logged out"
     })
 }
+
+

@@ -1,7 +1,6 @@
 let mongoose = require("mongoose")
 let bcrypt = require("bcrypt")
 let jwt = require("jsonwebtoken")
-const orderItemSchema = require("./orderSchema")
 
 let userSchema = new mongoose.Schema({
     email:{
@@ -24,10 +23,14 @@ let userSchema = new mongoose.Schema({
     },
     userType : {
         type : String ,
-        enum : ['normal' , 'manager' , 'executive'] ,
+        enum : ['admin' , 'driver'] ,
         required : true
-    }
+    } ,
 
+    vehicleAssigned : {
+        type : mongoose.Types.ObjectId ,
+        defaultValue : null 
+    }
 
 })
 

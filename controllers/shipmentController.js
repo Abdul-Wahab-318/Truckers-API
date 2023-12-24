@@ -10,6 +10,7 @@ exports.getAllShipments = async (req,resp)=>{
     })
 }
 
+//GET ALL pending shipments
 exports.getAllPendingShipments = async (req,resp)=>{
     let allShipments = await shipmentSchema.find({ status : { $eq : 'pending'}})
     resp.status(200).json({
@@ -34,22 +35,48 @@ exports.getShipment = async (req, res)=>{
     }
 }
 
-// DELETE A shipment
-exports.deleteShipment = async (req,res)=>{
-    const shipment = await shipmentSchema.findById(req.params.id)
-    shipment.remove()
-    res.status(200).json({
-        "message": `rip`
-    })
+// cancel A shipment
+exports.cancelShipment = async (req,res)=>{
+
+    try{
+        const shipment = await shipmentSchema.updateOne( { _id : req.params.id } , 
+            { $set : { status : "cancelled" , date_updated : Date.now() } 
+        })
+
+        return res.status(200).json({
+            "message": `shipment cancelled` ,
+            data : shipment
+        })
+
+    }
+    catch(err){
+        console.error(err)
+        return res.status(500).json({
+            error
+        })
+    }
 }
 
-exports.ApproveShipment = async (req,res)=>{
-    const payload = { ...req.body , status : 'approved'}
-    const shipment = await 
-    shipmentSchema.findByIdAndUpdate(req.params.id , { ...payload })
-    res.status(200).json({
-        "message": `rip`
-    })
+// mark shipment as delivered
+exports.deliverShipment = async (req,res)=>{
+
+    try{
+        const shipment = await shipmentSchema.updateOne( { _id : req.params.id } , 
+            { $set : { status : "delivered" , date_updated : Date.now() } 
+        })
+
+        return res.status(200).json({
+            "message": `OK` ,
+            data : shipment
+        })
+
+    }
+    catch(err){
+        console.error(err)
+        return res.status(500).json({
+            error
+        })
+    }
 }
 
 // CREATE A shipment

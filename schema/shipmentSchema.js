@@ -19,7 +19,7 @@ let shipmentSchema = new mongoose.Schema({
         required : true
     } ,
     vehicle: {
-        type : String ,
+        type : mongoose.Types.ObjectId ,
         required : true
     } ,
     weight :{
