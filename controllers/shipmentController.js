@@ -1,5 +1,6 @@
 const shipmentSchema = require("../schema/shipmentSchema")
 const mongoose = require("mongoose")
+const io = require("../server")
 
 //GET ALL shipmentS
 exports.getAllShipments = async (req,resp)=>{
@@ -61,10 +62,11 @@ exports.cancelShipment = async (req,res)=>{
 exports.deliverShipment = async (req,res)=>{
 
     try{
-        const shipment = await shipmentSchema.updateOne( { _id : req.params.id } , 
+        const shipment = await shipmentSchema.findOneAndUpdate( { _id : req.params.id } , 
             { $set : { status : "delivered" , date_updated : Date.now() } 
-        })
+        } , { new: true })
 
+        io.emit("shipment-delivered" , { data : shipment , message : `Shipment delivered`})
         return res.status(200).json({
             "message": `OK` ,
             data : shipment
@@ -74,7 +76,7 @@ exports.deliverShipment = async (req,res)=>{
     catch(err){
         console.error(err)
         return res.status(500).json({
-            error
+            err
         })
     }
 }
