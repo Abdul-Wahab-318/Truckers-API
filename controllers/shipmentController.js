@@ -38,11 +38,12 @@ exports.getShipment = async (req, res)=>{
 
 // cancel A shipment
 exports.cancelShipment = async (req,res)=>{
-
     try{
-        const shipment = await shipmentSchema.updateOne( { _id : req.params.id } , 
+        const shipment = await shipmentSchema.findOneAndUpdate( { _id : req.params.id } , 
             { $set : { status : "cancelled" , date_updated : Date.now() } 
-        })
+        } , { new: true })
+
+        io.emit("shipment-cancelled" , { data : shipment , message : `Shipment cancelled`})
 
         return res.status(200).json({
             "message": `shipment cancelled` ,
