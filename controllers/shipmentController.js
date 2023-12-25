@@ -99,3 +99,56 @@ exports.createShipment = async (req,res)=>{
         })
     }
 }
+
+exports.getsShipmentStats = async (req,res) => {
+
+    try{
+        let pendingShipments = await shipmentSchema.countDocuments({status:"pending"})
+        let deliveredShipments = await shipmentSchema.countDocuments({status:"delivered"})
+
+        // find the most popular route
+        const result = await shipmentSchema.aggregate([
+            {
+            $group: {
+                _id: { from: '$from', to: '$to' },
+                count: { $sum: 1 },
+            },
+            },
+            {
+            $sort: { count: -1 }, // Sort in descending order by count
+            },
+            {
+            $limit: 1, // Limit to the top result
+            },
+        ])
+
+        let mostPopularRoute = "none"
+
+        if (result.length > 0)
+            mostPopularRoute = result[0]._id;
+        else
+            console.log('No shipments found.');
+
+        
+
+        return res.status(200).json({
+            message : 'OK' ,
+            data : [
+                { label : 'Pending Shipments' , data : pendingShipments , img : '../../images/delivery.png'},
+                { label : 'Delivered Shipments' , data : deliveredShipments , img : 'deliveredIcon'},
+                { label : 'Most Popular Route' , img : 'routeIcon' , data : ( result.length > 0 ) ? `${mostPopularRoute.from} - ${mostPopularRoute.to}` : "none" } 
+            ]
+        })
+
+
+    }
+    catch(err)
+    {
+        console.error(err)
+        return res.status(400).json({
+            message : "failed miserably" ,
+            error : err
+        })
+    }
+
+}

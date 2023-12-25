@@ -92,7 +92,7 @@ exports.getShipmentByVehicle = async function( req , res ) {
 
     try{    
         const id = req.params.id
-        let shipments = await shipmentSchema.find({ vehicle :id  })
+        let shipments = await shipmentSchema.find({ vehicle :id , status : "pending" })
 
         return res.status(200).json({
             message : 'shipments fetched successfully' ,

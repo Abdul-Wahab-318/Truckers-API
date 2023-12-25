@@ -1,11 +1,13 @@
 const express = require("express")
-const { createShipment, deleteShipment, getAllShipments, getShipment, getAllPendingShipments, deliverShipment, cancelShipment } = require("../controllers/shipmentController")
+const { createShipment, deleteShipment, getAllShipments, getShipment, getAllPendingShipments, deliverShipment, cancelShipment, getsShipmentStats } = require("../controllers/shipmentController")
 const { isAuthenticated } = require("../middleware/auth")
 let router = express.Router()
 
 router.route("/create").post(createShipment)
 
 router.route("/shipments").get(getAllShipments)
+
+router.route("/shipment-stats").get(getsShipmentStats)
 
 router.route("/shipments/pending").get(getAllPendingShipments)
 
