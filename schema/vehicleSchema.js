@@ -20,12 +20,12 @@ const vehicleSchema = new mongoose.Schema({
     maxCapacity : {
         type : Number ,
         required : true
-    } , 
+    }  
 
-    currentLocation : {
-        type : String ,
-        default : null 
-    }
+    // currentLocation : {
+    //     type : String ,
+    //     default : null 
+    // }
 
 })
 

@@ -27,8 +27,6 @@ app.use(cors({
     credentials: true
 }))
 
-var bodyParser = require('body-parser')
-app.use(bodyParser({limit : '20mb'}))
 
 //JSON MIDDLEWARE
 app.use(express.json())

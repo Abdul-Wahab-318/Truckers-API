@@ -1,5 +1,6 @@
 let jwt = require("jsonwebtoken")
 let userSchema = require('../schema/userSchema')
+
 exports.isAuthenticated =  (req,res,next)=>{
     
     let {token} = req.cookies

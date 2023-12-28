@@ -13,7 +13,7 @@ exports.getUser = async (req,res)=>{
         })
     }
     catch(e){
-
+        return res.status(500).json({ message: 'user not found' , error: e })
     }
 
 }
@@ -103,7 +103,8 @@ exports.loginUser =  async (req,res)=>{
         .json({
             user
         })
-    }catch(e){
+    }
+    catch(e){
         res.status(400).json({
             error : e,
             message: "cannot login"
