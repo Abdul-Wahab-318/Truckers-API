@@ -22,10 +22,6 @@ let shipmentSchema = new mongoose.Schema({
         type : mongoose.Types.ObjectId ,
         required : true
     } ,
-    weight :{
-        type : Number,
-        required : true  
-    } ,
     status : {
         type : String ,
         default : 'pending'

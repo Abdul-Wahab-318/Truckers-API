@@ -1,6 +1,6 @@
 const shipmentSchema = require("../schema/shipmentSchema")
 const mongoose = require("mongoose")
-const io = require("../server")
+//const {io} = require("../index")
 
 //GET ALL shipmentS
 exports.getAllShipments = async (req,resp)=>{
@@ -43,7 +43,7 @@ exports.cancelShipment = async (req,res)=>{
             { $set : { status : "cancelled" , date_updated : Date.now() } 
         } , { new: true })
 
-        io.emit("shipment-cancelled" , { data : shipment , message : `Shipment cancelled`})
+        //io.emit("shipment-cancelled" , { data : shipment , message : `Shipment cancelled`})
 
         return res.status(200).json({
             "message": `shipment cancelled` ,
@@ -67,7 +67,7 @@ exports.deliverShipment = async (req,res)=>{
             { $set : { status : "delivered" , date_updated : Date.now() } 
         } , { new: true })
 
-        io.emit("shipment-delivered" , { data : shipment , message : `Shipment delivered`})
+        //io.emit("shipment-delivered" , { data : shipment , message : `Shipment delivered`})
         return res.status(200).json({
             "message": `OK` ,
             data : shipment
@@ -101,7 +101,7 @@ exports.createShipment = async (req,res)=>{
     }
 }
 
-exports.getsShipmentStats = async (req,res) => {
+exports.getShipmentStats = async (req,res) => {
 
     try{
         let pendingShipments = await shipmentSchema.countDocuments({status:"pending"})

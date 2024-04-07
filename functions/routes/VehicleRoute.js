@@ -1,8 +1,10 @@
 const express = require('express');
 const { createVehicle, getAllVehicles , getFilteredVehicles , getShipmentByVehicle, getVehicle} = require('../controllers/VehicleController');
+const { isAuthenticated } = require('../middleware/auth');
 const router = express.Router()
 
-router.post('/create' , createVehicle)
+
+router.post('/create' , isAuthenticated , createVehicle)
 
 router.get('/vehicles' , getAllVehicles)
 
