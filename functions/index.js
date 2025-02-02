@@ -28,7 +28,8 @@ app.use(cookieParser())
 //USE CORS
 let cors = require("cors")
 app.use(cors({
-    origin : ['https://truckers-awm.netlify.app'],
+    origin : 'https://truckers-awm.netlify.app' ,
+    //origin : 'http://localhost:3000',
     credentials: true
 }))
 

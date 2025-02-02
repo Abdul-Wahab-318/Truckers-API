@@ -1,7 +1,13 @@
 let io
 
 exports.socketConnection = (server) => {
-  io = require('socket.io')(server)
+  io = require('socket.io')(server , {
+    cors: {
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST"],
+      credentials: true
+    }
+  })
   io.on('connection', (socket) => {
     console.log('a user connected ' + socket.id);
     socket.on('identify' , (userType , userID) => {

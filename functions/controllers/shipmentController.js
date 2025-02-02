@@ -1,6 +1,6 @@
 const shipmentSchema = require("../schema/shipmentSchema")
 const mongoose = require("mongoose")
-//const {io} = require("../index")
+const {emitCancelShipmentEvent, emitDeliverShipmentEvent} = require("../config/socket-io")
 
 //GET ALL shipments
 exports.getAllShipments = async (req,resp)=>{
@@ -42,8 +42,7 @@ exports.cancelShipment = async (req,res)=>{
         const shipment = await shipmentSchema.findOneAndUpdate( { _id : req.params.id } , 
             { $set : { status : "cancelled" , date_updated : Date.now() } 
         } , { new: true })
-
-        io.emit("shipment-cancelled" , { data : shipment , message : `Shipment cancelled`})
+        emitCancelShipmentEvent(shipment , 'Shipment Cancelled')
 
         return res.status(200).json({
             "message": `shipment cancelled` ,
@@ -67,7 +66,7 @@ exports.deliverShipment = async (req,res)=>{
             { $set : { status : "delivered" , date_updated : Date.now() } 
         } , { new: true })
 
-        io.emit("shipment-delivered" , { data : shipment , message : `Shipment delivered`})
+        emitDeliverShipmentEvent(shipment , 'Shipment Delivered')
         return res.status(200).json({
             "message": `OK` ,
             data : shipment
