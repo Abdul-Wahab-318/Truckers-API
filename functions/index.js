@@ -28,7 +28,6 @@ app.use(cookieParser())
 //USE CORS
 let cors = require("cors")
 app.use(cors({
-    //origin:['http://localhost:3001' , 'http://localhost:3000' ] ,
     origin : ['https://truckers-awm.netlify.app'],
     credentials: true
 }))
@@ -41,8 +40,8 @@ app.use(express.json())
 
 
 //LISTEN AT PORT
-// const PORT = process.env.PORT || 8000
-// server.listen(PORT , console.log(`server running on ${PORT}`))
+const PORT = process.env.PORT || 8000
+server.listen(PORT , console.log(`server running on ${PORT}`))
 
 //USER ROUTE
 let userRoute = require("./routes/userRoute")
