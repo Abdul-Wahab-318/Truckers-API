@@ -2,7 +2,7 @@ const shipmentSchema = require("../schema/shipmentSchema")
 const mongoose = require("mongoose")
 //const {io} = require("../index")
 
-//GET ALL shipmentS
+//GET ALL shipments
 exports.getAllShipments = async (req,resp)=>{
     let allShipments = await shipmentSchema.find()
     resp.status(200).json({

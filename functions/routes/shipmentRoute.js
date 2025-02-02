@@ -15,7 +15,7 @@ router.route("/shipments/pending").get(getAllPendingShipments)
 
 router.route("/deliver/:id").put(deliverShipment)
 
-router.route("/cancel/:id").put(cancelShipment)
+router.route("/cancel/:id").put( isAuthenticated , cancelShipment)
 
 router.route("/:id").get(getShipment)
 
