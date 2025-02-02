@@ -7,7 +7,7 @@ const vehicleSchema = require("../schema/vehicleSchema")
 exports.getUser = async (req,res)=>{
     try{
         let user =  await userSchema.findById(req.params.id) 
-        res.status(200).json({
+        return res.status(200).json({
             user,
             message:"user sent"
         })
@@ -118,7 +118,7 @@ exports.loginUser =  async (req,res)=>{
 exports.logoutUser = async (req,res)=>{
     res.clearCookie("token")
     req.user = null
-    res.status(200).json({
+    return res.status(200).json({
         message: "logged out"
     })
 }

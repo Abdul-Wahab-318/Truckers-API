@@ -5,7 +5,7 @@ const mongoose = require("mongoose")
 //GET ALL shipments
 exports.getAllShipments = async (req,resp)=>{
     let allShipments = await shipmentSchema.find()
-    resp.status(200).json({
+    return resp.status(200).json({
         message:"success",
         data : allShipments
     })
@@ -14,7 +14,7 @@ exports.getAllShipments = async (req,resp)=>{
 //GET ALL pending shipments
 exports.getAllPendingShipments = async (req,resp)=>{
     let allShipments = await shipmentSchema.find({ status : { $eq : 'pending'}})
-    resp.status(200).json({
+    return resp.status(200).json({
         message:"success",
         data : allShipments
     })
@@ -24,12 +24,12 @@ exports.getAllPendingShipments = async (req,resp)=>{
 exports.getShipment = async (req, res)=>{
     try{
         let shipment = await shipmentSchema.findById(req.params.id)
-        res.status(200).json({
+        return res.status(200).json({
             shipment
         })
     }
     catch(e){
-        res.status(400).json({
+        return res.status(400).json({
             error: e.errors,
             message: "failed"
         })
@@ -43,7 +43,7 @@ exports.cancelShipment = async (req,res)=>{
             { $set : { status : "cancelled" , date_updated : Date.now() } 
         } , { new: true })
 
-        //io.emit("shipment-cancelled" , { data : shipment , message : `Shipment cancelled`})
+        io.emit("shipment-cancelled" , { data : shipment , message : `Shipment cancelled`})
 
         return res.status(200).json({
             "message": `shipment cancelled` ,
@@ -67,7 +67,7 @@ exports.deliverShipment = async (req,res)=>{
             { $set : { status : "delivered" , date_updated : Date.now() } 
         } , { new: true })
 
-        //io.emit("shipment-delivered" , { data : shipment , message : `Shipment delivered`})
+        io.emit("shipment-delivered" , { data : shipment , message : `Shipment delivered`})
         return res.status(200).json({
             "message": `OK` ,
             data : shipment
@@ -88,13 +88,13 @@ exports.createShipment = async (req,res)=>{
 
         let shipment = await shipmentSchema.create(req.body)
         
-        res.status(201).json({
+        return res.status(201).json({
             "message": `shipment created`
         })
     }
     catch(e){
         console.log(e)
-        res.status(400).json({
+        return res.status(400).json({
             message:"bhai time bou shart hai",
             error: e.errors
         })
@@ -129,8 +129,6 @@ exports.getShipmentStats = async (req,res) => {
             mostPopularRoute = result[0]._id;
         else
             console.log('No shipments found.');
-
-        
 
         return res.status(200).json({
             message : 'OK' ,
